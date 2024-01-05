@@ -1,24 +1,14 @@
-#include <set>
-
 struct Solution {
     int maxWidthOfVerticalArea(const vector<vector<int>>& points) {
-        set<int> xCoor;
-        for (vector<vector<int>>::const_iterator it = points.cbegin();
-             it != points.cend();
-             ++it){
-            xCoor.insert(*(it->cbegin()));
+        vector<int> xCoor(points.size(), 0);
+        for (int i = 0; i < points.size(); ++i){
+            xCoor[i] = points[i][0];
         }
-        int prev = *xCoor.cbegin();
-        int maxVal = 0;
-        for (set<int>::const_iterator it = xCoor.cbegin();
-             it != xCoor.cend();
-             ++it){
-            int diff = *it - prev;
-            if (diff > maxVal){
-                maxVal = diff;
-            }
-            prev = *it;
+        sort(xCoor.begin(), xCoor.end());
+        int diff = xCoor[1] - xCoor[0];
+        for (int i = 2; i < points.size(); ++i){
+            diff = max(diff, xCoor[i] - xCoor[i - 1]);
         }
-        return maxVal;
+        return diff;
     }
 };
