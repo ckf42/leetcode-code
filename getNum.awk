@@ -4,14 +4,10 @@ BEGIN {
 
 {
     for (i = 1; i <= NF; ++i)
-        if ($i ~ /[0-9]/) {
-            split($i, a, ".")
-            d[a[1]] = 1
-        }
+        if ($i ~ /^[0-9]/) d[int($i)] = 1
 }
 
 END {
-    sep = ""
     for (n in d) {
         res = res sep n
         sep = ", "
