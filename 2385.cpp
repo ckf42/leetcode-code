@@ -9,49 +9,33 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-#include <unordered_map>
-#include <unordered_set>
-
 struct Solution {
-    void buildParent(
-            TreeNode *node,
-            TreeNode *parent,
-            unordered_map<TreeNode*, TreeNode*> &parentMap,
-            TreeNode *&target,
-            int start){
+    int getContri(TreeNode *node, bool &isInSubtree, int start, int &maxDist){
+        if (node == nullptr){
+            isInSubtree = false;
+            return -1;
+        }
+        bool isInLeft, isInRight;
+        int leftContri = this->getContri(node->left, isInLeft, start, maxDist);
+        int rightContri = this->getContri(node->right, isInRight, start, maxDist);
         if (node->val == start){
-            target = node;
+            maxDist = max(maxDist, max(leftContri, rightContri) + 1);
+            isInSubtree = true;
+            return 0;
+        } else if (isInLeft || isInRight){
+            maxDist = max(maxDist, leftContri + rightContri + 2);
+            isInSubtree = true;
+            return (isInLeft ? leftContri : rightContri) + 1;
+        } else {
+            isInSubtree = false;
+            return max(leftContri, rightContri) + 1;
         }
-        parentMap[node] = parent;
-        if (node->left != nullptr){
-            buildParent(node->left, node, parentMap, target, start);
-        }
-        if (node->right != nullptr){
-            buildParent(node->right, node, parentMap, target, start);
-        }
-    }
-
-    int dfs(
-            TreeNode *node, 
-            unordered_map<TreeNode*, TreeNode*> &parent,
-            unordered_set<TreeNode*> &visited,
-            int depth){
-        TreeNode * arr[3] = {node->left, node->right, parent[node]};
-        int res = depth;
-        visited.insert(node);
-        for (int i = 0; i < 3; ++i){
-            if (arr[i] != nullptr && !visited.contains(arr[i])){
-                res = max(res, dfs(arr[i], parent, visited, depth) + 1);
-            }
-        }
-        return res;
     }
 
     int amountOfTime(TreeNode* root, int start) {
-        TreeNode *target = nullptr;
-        unordered_map<TreeNode*, TreeNode*> parent;
-        buildParent(root, nullptr, parent, target, start);
-        unordered_set<TreeNode*> visited;
-        return dfs(target, parent, visited, 0);
+        int maxDist = 0;
+        bool isInSubtree;
+        this->getContri(root, isInSubtree, start, maxDist);
+        return maxDist;
     }
 };

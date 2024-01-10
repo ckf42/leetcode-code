@@ -6,30 +6,22 @@
 #         self.right = right
 class Solution:
     def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
-        assert root is not None
-        target = None
-        parent = dict()
-        stack = [(root, None)]
-        while len(stack) != 0:
-            node, p = stack.pop()
+        maxDist = 0
+
+        def getContri(node):
+            nonlocal maxDist
+            if node is None:
+                return (-1, False)
+            leftContri, targetIsInLeft = getContri(node.left)
+            rightContri, targetIsInRight = getContri(node.right)
             if node.val == start:
-                target = node
-            parent[node] = p
-            for n in (node.left, node.right):
-                if n is not None:
-                    stack.append((n, node))
-        visited = set()
-        stack = [(target, 0)]
-        res = 0
-        while len(stack) != 0:
-            node, d = stack.pop()
-            if node in visited:
-                continue
-            res = max(res, d)
-            visited.add(node)
-            for nei in (node.left, node.right, parent[node]):
-                if nei is not None:
-                    stack.append((nei, d + 1))
-        return res
-        
-            
+                maxDist = max(maxDist, max(leftContri, rightContri) + 1)
+                return (0, True)
+            elif targetIsInLeft or targetIsInRight:
+                maxDist = max(maxDist, leftContri + rightContri + 2)
+                return ((leftContri if targetIsInLeft else rightContri) + 1, True)
+            else:
+                return (max(leftContri, rightContri) + 1, False)
+
+        getContri(root)
+        return maxDist
