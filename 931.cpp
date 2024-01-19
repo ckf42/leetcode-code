@@ -8,6 +8,6 @@ struct Solution {
             }
             matrix[i][n - 1] += min(matrix[i - 1][n - 2], matrix[i - 1][n - 1]);
         }
-        return *min_element(matrix.back().cbegin(), matrix.back().cend());
+        return *min_element(matrix.back().begin(), matrix.back().end());
     }
 };
