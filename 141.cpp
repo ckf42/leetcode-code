@@ -20,3 +20,26 @@ struct Solution {
         }
     }
 };
+// half of Brent algorithm
+// struct Solution {
+//     bool hasCycle(ListNode *head) {
+//         if (head == nullptr || head->next == nullptr){
+//             return false;
+//         }
+//         int p = 1, lambda = 1;
+//         ListNode *tort = head, *hare = head->next;
+//         while (tort != hare){
+//             if (p == lambda){
+//                 tort = hare;
+//                 p <<= 1;
+//                 lambda = 0;
+//             }
+//             hare = hare->next;
+//             if (hare == nullptr){
+//                 return false;
+//             }
+//             ++lambda;
+//         }
+//         return true;
+//     }
+// };
