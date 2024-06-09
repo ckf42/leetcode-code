@@ -1,38 +1,21 @@
-#include <unordered_map>
-#include <ranges>
-
 struct Solution {
     struct TrieNode {
-        string cont;
-        unordered_map<char, int> next;
+        int len = 0;
+        int next[26] = {0};
     };
-
-    string rep(string w, const vector<TrieNode> &trie){
-        int ptr = 0;
-        for (char &c : w){
-            if (!trie[ptr].next.contains(c)){
-                return w;
-            }
-            ptr = trie[ptr].next.at(c);
-            if (trie[ptr].cont.size() != 0){
-                return trie[ptr].cont;
-            }
-        }
-        return w;
-    }
 
     string replaceWords(vector<string>& dictionary, string &sentence) {
         vector<TrieNode> trie(1);
         for (string &w : dictionary){
             int ptr = 0;
             for (char &c : w){
-                if (!trie[ptr].next.contains(c)){
-                    trie[ptr].next[c] = trie.size();
+                if (trie[ptr].next[c - 'a'] == 0){
+                    trie[ptr].next[c - 'a'] = trie.size();
                     trie.emplace_back();
                 }
-                ptr = trie[ptr].next[c];
+                ptr = trie[ptr].next[c - 'a'];
             }
-            trie[ptr].cont = w;
+            trie[ptr].len = w.size();
         }
         string res;
         int idx = 0;
@@ -41,7 +24,20 @@ struct Solution {
             if (nextIdx == string::npos){
                 nextIdx = sentence.size();
             }
-            res += this->rep(sentence.substr(idx, nextIdx - idx), trie) + " ";
+            int ptr = 0, repLen = nextIdx - idx;
+            for (int i = idx; i < nextIdx; ++i){
+                char &c = sentence[i];
+                if (trie[ptr].next[c - 'a'] == 0){
+                    break;
+                }
+                ptr = trie[ptr].next[c - 'a'];
+                if (trie[ptr].len != 0){
+                    repLen = trie[ptr].len;
+                    break;
+                }
+            }
+            res += sentence.substr(idx, repLen);
+            res += " ";
             idx = nextIdx + 1;
         }
         res.pop_back();
