@@ -1,56 +1,53 @@
 class Solution:
     def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
-        edgeList = [list() for _ in range(4)]
-        for t, a, b in edges:
-            edgeList[t].append((a, b))
-        parent = list(range(n + 1))
-        compSize = [1] * (n + 1)
-        def getParent(x):
-            while parent[x] != x:
-                x, parent[x] = parent[x], parent[parent[x]]
+        edgeTypes = [list() for _ in range(4)]
+        for i, e in enumerate(edges):
+            edgeTypes[e[0]].append(i)
+        aParent = list(range(n + 1))
+        bParent = list(range(n + 1))
+        aCompSize = [1] * (n + 1)
+        bCompSize = [1] * (n + 1)
+        def getParent(x, pArr):
+            while pArr[x] != x:
+                x, pArr[x] = pArr[x], pArr[pArr[x]]
             return x
-        def unionComp(a, b):
-            a = getParent(a)
-            b = getParent(b)
+        def sameGroup(x, y, pArr):
+            return getParent(x, pArr) == getParent(y, pArr)
+        def unionComp(a, b, pArr, sArr):
+            a = getParent(a, pArr)
+            b = getParent(b, pArr)
             if a == b:
                 return
-            if compSize[a] < compSize[b]:
+            if sArr[a] < sArr[b]:
                 a, b = b, a
-            parent[b] = a
-            compSize[a] += compSize[b]
-        chosen = []
-        for i, e in enumerate(edgeList[3]):
-            a, b = e
-            if getParent(a) == getParent(b):
+            pArr[b] = a
+            sArr[a] += sArr[b]
+        chosenEdges = 0
+        for i in edgeTypes[3]:
+            _, x, y = edges[i]
+            if sameGroup(x, y, aParent) and sameGroup(x, y, bParent):
                 continue
-            chosen.append((3, i))
-            unionComp(a, b)
-        for i, e in enumerate(edgeList[1]):
-            a, b = e
-            if getParent(a) == getParent(b):
-                continue
-            chosen.append((1, i))
-            unionComp(a, b)
-        if compSize[getParent(1)] != n:
+            chosenEdges += 1
+            unionComp(x, y, aParent, aCompSize)
+            unionComp(x, y, bParent, bCompSize)
+        if aCompSize[getParent(1, aParent)] != n:
+            for i in edgeTypes[1]:
+                _, x, y = edges[i]
+                if sameGroup(x, y, aParent):
+                    continue
+                chosenEdges += 1
+                unionComp(x, y, aParent, aCompSize)
+        if aCompSize[getParent(1, aParent)] != n:
             return -1
-        parent = list(range(n + 1))
-        compSize = [1] * (n + 1)
-        for t, i in chosen:
-            if t == 3:
-                unionComp(edgeList[3][i][0], edgeList[3][i][1])
-        for i, e in enumerate(edgeList[3]):
-            a, b = e
-            if getParent(a) == getParent(b):
-                continue
-            chosen.append((3, i))
-            unionComp(a, b)
-        for i, e in enumerate(edgeList[2]):
-            a, b = e
-            if getParent(a) == getParent(b):
-                continue
-            chosen.append((2, i))
-            unionComp(a, b)
-        if compSize[getParent(1)] != n:
+        if bCompSize[getParent(1, bParent)] != n:
+            for i in edgeTypes[2]:
+                _, x, y = edges[i]
+                if sameGroup(x, y, bParent):
+                    continue
+                chosenEdges += 1
+                unionComp(x, y, bParent, bCompSize)
+        if bCompSize[getParent(1, bParent)] != n:
             return -1
         else:
-            return len(edges) - len(chosen)
+            return len(edges) - chosenEdges
+
