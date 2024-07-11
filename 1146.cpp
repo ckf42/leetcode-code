@@ -1,21 +1,21 @@
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 
-struct Edit {
-    int id;
-    int val;
-};
-
 struct SnapshotArray {
-    int currId = 0;
-    std::map<int, vector<Edit>> history;
+    struct Edit {
+        int id;
+        int val;
+    };
 
-    SnapshotArray(int length) {}
+    int currId;
+    unordered_map<int, vector<Edit>> history;
+
+    SnapshotArray(int length): currId(0) {}
     
     void set(int index, int val) {
         Edit e{currId, val};
-        if (history.find(index) == history.end()){
-            history.emplace(make_pair(index, vector<Edit>{e}));
+        if (!history.contains(index)){
+            history.insert({index, vector<Edit>{e}});
         } else {
             Edit& lastE = history[index].back();
             if (lastE.val != e.val){
@@ -33,7 +33,7 @@ struct SnapshotArray {
     }
     
     int get(int index, int snap_id) {
-        if (history.find(index) == history.end()){
+        if (!history.contains(index)){
             return 0;
         } else {
             vector<Edit>& vec = history[index];
@@ -48,3 +48,4 @@ struct SnapshotArray {
         }
     }
 };
+
