@@ -1,53 +1,32 @@
 struct Solution {
-    inline bool isPal(int i, int j, const string &s){
+    inline bool isPal(int i, int j, string &s){
         while (i < j){
-            if (s[i++] != s[j--]){
+            if (s[i] != s[j]){
                 return false;
             }
+            ++i;
+            --j;
         }
         return true;
     }
-
-    using seg = pair<int, int>;
-    using part = vector<seg>;
-    using collPart = vector<part>;
-
-    vector<vector<string>> partition(const string &s) {
-        int n = s.size();
-        vector<int> occurIdx[26];
-        for (int i = 0; i < n; ++i){
-            occurIdx[s[i] - 'a'].push_back(i);
+    void genpal(int idx, string &s, vector<string> &part, vector<vector<string>> &res){
+        if (idx == s.size()){
+            res.push_back(part);
+            return;
         }
-        vector<int> prevOccur(n, -1);
-        for (int i = 0; i < 26; ++i){
-            for (int j = 1; j < occurIdx[i].size(); ++j){
-                prevOccur[occurIdx[i][j]] = occurIdx[i][j - 1];
+        for (int i = idx; i < s.size(); ++i){
+            if (!this->isPal(idx, i, s)){
+                continue;
             }
+            part.push_back(s.substr(idx, i - idx + 1));
+            this->genpal(i + 1, s, part, res);
+            part.pop_back();
         }
-        vector<collPart> memo(n);
-        memo[0].push_back({{make_pair(0, 1)}});
-        for (int i = 1; i < n; ++i){
-            for (int ptr = i; ptr != -1; ptr = prevOccur[ptr]){
-                if (!isPal(ptr, i, s)){
-                    continue;
-                }
-                if (ptr == 0){
-                    memo[i].push_back({{make_pair(0, i + 1)}});
-                } else {
-                    for (part possibility: memo[ptr - 1]){
-                        possibility.push_back({make_pair(ptr, i - ptr + 1)});
-                        memo[i].push_back(possibility);
-                    }
-                }
-            }
-        }
+    }
+    vector<vector<string>> partition(string &s) {
         vector<vector<string>> res;
-        for (part &p : memo[n - 1]){
-            res.push_back({});
-            for (seg &sg : p){
-                res.back().push_back(s.substr(sg.first, sg.second));
-            }
-        }
+        vector<string> part;
+        this->genpal(0, s, part, res);
         return res;
     }
 };

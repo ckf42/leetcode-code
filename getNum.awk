@@ -4,7 +4,7 @@ BEGIN {
 
 {
     for (i = 1; i <= NF; ++i)
-        if ($i ~ /^[0-9]/) d[int($i)] = 1
+        if ($i ~ /^[0-9]./) d[int($i)] = 1
 }
 
 END {

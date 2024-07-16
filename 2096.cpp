@@ -1,32 +1,33 @@
 struct Solution {
-    inline bool getPath(const TreeNode* root, int target, string& path){
-        if (root == nullptr){
+    bool dfs(TreeNode *node, int target, string &path){
+        if (node == nullptr){
             return false;
         }
-        if (root->val == target){
+        if (node->val == target){
             return true;
         }
-        if (this->getPath(root->left, target, path)){
-            path += "L";
+        path.push_back('L');
+        if (this->dfs(node->left, target, path)){
             return true;
         }
-        if (this->getPath(root->right, target, path)){
-            path += "R";
+        path.back() = 'R';
+        if (this->dfs(node->right, target, path)){
             return true;
+        } else {
+            path.pop_back();
+            return false;
         }
-        return false;
     }
-
-    string getDirections(const TreeNode* root, int startValue, int destValue) {
-        string startPath{""}, destPath{""};
-        this->getPath(root, startValue, startPath);
-        this->getPath(root, destValue, destPath);
-        reverse(startPath.begin(), startPath.end());
-        reverse(destPath.begin(), destPath.end());
-        size_t ptr = 0, minlen = min(startPath.size(), destPath.size());
-        while (ptr < minlen && startPath[ptr] == destPath[ptr]){
-            ++ptr;
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        string p1, p2;
+        this->dfs(root, startValue, p1);
+        this->dfs(root, destValue, p2);
+        int l1 = p1.size(), l2 = p2.size(), i = 0;
+        while (i < min(l1, l2) && p1[i] == p2[i]){
+            ++i;
         }
-        return string(startPath.size() - ptr, 'U') + destPath.substr(ptr);
+        string res(l1 - i, 'U');
+        res += p2.substr(i);
+        return res;
     }
 };
