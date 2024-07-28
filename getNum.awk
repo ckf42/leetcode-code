@@ -4,7 +4,10 @@ BEGIN {
 
 {
     for (i = 1; i <= NF; ++i)
-        if ($i ~ /^[0-9]./) d[int($i)] = 1
+        match($i, /^sol\/([0-9]+)[.]/, m)
+        if (m[0]) {
+            d[int(m[1])] = 1
+        }
 }
 
 END {
