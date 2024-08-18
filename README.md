@@ -6,6 +6,7 @@ This repo contains solutions to some leetcode problems, for the purpose of recor
 
 Here are the list of questions that do not have a proper explanation on the solution (or not sure if they need one):
 
+<details>
 1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 22 23
 24 26 27 33 34 36 38 39 40 41 42 43 44 45 48 49 50 54 55 57
 60 61 62 63 64 65 66 67 69 70 71 72 73 74 75 76 78 79 80 85
@@ -36,3 +37,4 @@ Here are the list of questions that do not have a proper explanation on the solu
 2597 2610 2642 2678 2706 2709 2733 2742 2746 2750 2751 2760 2765 2785 2798 2812 2816 2849 2864 2869
 2870 2873 2903 2905 2906 2958 2962 2966 2970 2971 2976 2997 3005 3016 3033 3034 3068 3075 3110
 3127
+</details>
