@@ -2,17 +2,14 @@ from collections import deque
 
 class Solution:
     def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
-        recentMaxIndices = deque()
+        mst = deque()
         for j in range(len(nums)):
-            if len(recentMaxIndices) != 0:
-                nums[j] += nums[recentMaxIndices[0]]
-            while len(recentMaxIndices) != 0:
-                if j - recentMaxIndices[0] >= k:
-                    recentMaxIndices.popleft()
-                elif nums[recentMaxIndices[-1]] < nums[j]:
-                    recentMaxIndices.pop()
-                else:
-                    break
+            if len(mst) != 0:
+                nums[j] += nums[mst[0]]
+            while len(mst) != 0 and mst[0] <= j - k:
+                mst.popleft()
+            while len(mst) != 0 and nums[mst[-1]] < nums[j]:
+                mst.pop()
             if nums[j] > 0:
-                recentMaxIndices.append(j)
+                mst.append(j)
         return max(nums)

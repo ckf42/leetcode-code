@@ -2,24 +2,21 @@
 
 struct Solution {
     int constrainedSubsetSum(vector<int>& nums, int k) {
-        deque<int> recentMaxIndices;
+        deque<int> mst;
         int maxval = nums[0];
         for (int j = 0; j < nums.size(); ++j){
-            if (!recentMaxIndices.empty()){
-                nums[j] += nums[recentMaxIndices.front()];
+            if (!mst.empty()){
+                nums[j] += nums[mst.front()];
             }
             maxval = max(maxval, nums[j]);
-            while (!recentMaxIndices.empty()){
-                if (j - recentMaxIndices.front() >= k){
-                    recentMaxIndices.pop_front();
-                } else if (nums[recentMaxIndices.back()] < nums[j]){
-                    recentMaxIndices.pop_back();
-                } else {
-                    break;
-                }
+            while (!mst.empty() && mst.front() <= j - k){
+                mst.pop_front();
+            }
+            while (!mst.empty() && nums[mst.back()] < nums[j]){
+                mst.pop_back();
             }
             if (nums[j] > 0){
-                recentMaxIndices.push_back(j);
+                mst.push_back(j);
             }
         }
         return maxval;
