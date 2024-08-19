@@ -2,9 +2,9 @@
 
 This repo contains solutions to some leetcode problems, for the purpose of recording which questions I have solved.
 
-## Questions without explanations
+## Problems without explanations
 
-Here are the list of questions that do not have a proper explanation on the solution (or not sure if they need one):
+Here are the list of problems that I have yet add (proper) explanations on the solutions (or have not checked if they need one):
 
 <details>
 1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 22 23
