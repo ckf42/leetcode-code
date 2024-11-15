@@ -1,18 +1,26 @@
 struct Solution {
-    int minimizedMaximum(int n, vector<int>& quantities) {
-        int l = 1, r = ranges::max(quantities) + 1;
-        while (l < r){
-            int m = (l + r) / 2;
-            int q = 0;
-            for (int x : quantities){
-                q += (x + m - 1) / m;
+    int required(int k, vector<int> &quantities, int m){
+        int res = 0;
+        for (int i = 0; i < m; ++i){
+            if (quantities[i] <= k){
+                return res + m - i;
             }
-            if (q <= n){
-                r = m;
+            res += (quantities[i] + k - 1) / k;
+        }
+        return res;
+    }
+    int minimizedMaximum(int n, vector<int>& quantities) {
+        int m = quantities.size();
+        ranges::sort(quantities, std::greater{});
+        int s = 1, e = quantities[0];
+        while (s < e){
+            int k = (s + e) / 2;
+            if (this->required(k, quantities, m) > n){
+                s = k + 1;
             } else {
-                l = m + 1;
+                e = k;
             }
         }
-        return l;
+        return s;
     }
 };
