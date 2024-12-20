@@ -1,23 +1,14 @@
 struct Solution {
-    vector<int> finalPrices(const vector<int>& prices) {
-        size_t n = prices.size(), ptr;
-        short i;
-        vector<int> res, smallIdxAfter;
-        res.resize(n);
-        smallIdxAfter.resize(n);
-        res[n - 1] = prices[n - 1];
-        smallIdxAfter[n - 1] = n;
-        for (i = n - 2; i >= 0; --i){
-            ptr = i + 1;
-            while (ptr < n && prices[i] < prices[ptr]){
-                ptr = smallIdxAfter[ptr];
+    vector<int> finalPrices(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> res(n, 0), st(1, prices.back());
+        res.back() = prices.back();
+        for (int i = n - 2; i >= 0; --i){
+            while (!st.empty() && st.back() > prices[i]){
+                st.pop_back();
             }
-            smallIdxAfter[i] = ptr;
-            if (ptr == n){
-                res[i] = prices[i];
-            } else {
-                res[i] = prices[i] - prices[smallIdxAfter[i]];
-            }
+            res[i] = prices[i] - (st.empty() ? 0 : st.back());
+            st.push_back(prices[i]);
         }
         return res;
     }
