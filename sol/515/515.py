@@ -1,24 +1,19 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+from collections import deque
+
 class Solution:
     def largestValues(self, root: Optional[TreeNode]) -> List[int]:
-        res = list()
-
-        def dfs(node, level):
-            if node is None:
-                return
-            if level >= len(res):
-                res.append(node.val)
-            else:
-                res[level] = max(res[level], node.val)
-            if node.left is not None:
-                dfs(node.left, level + 1)
-            if node.right is not None:
-                dfs(node.right, level + 1)
-
-        dfs(root, 0)
+        res = []
+        q = deque()
+        if root is not None:
+            q.append(root)
+        while (n := len(q)) != 0:
+            maxVal = q[0].val
+            for _ in range(n):
+                node = q.popleft()
+                maxVal = max(maxVal, node.val)
+                if node.left is not None:
+                    q.append(node.left)
+                if node.right is not None:
+                    q.append(node.right)
+            res.append(maxVal)
         return res
