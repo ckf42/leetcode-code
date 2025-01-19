@@ -4,7 +4,10 @@ This repo contains solutions to some leetcode problems, for the purpose of recor
 
 ## Problems without explanations
 
-Here are the list of problems that I have yet add (proper) explanations on the solutions (or have not checked if they need one):
+Here is a list of problems that
+* (a) are not really done yet;
+* (b) require further work on the solution; or
+* (c) do not have an explanation on the algorithm (usually because I haven't checked):
 
 <details>
 1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 22 23
@@ -36,5 +39,5 @@ Here are the list of problems that I have yet add (proper) explanations on the s
 2482 2483 2485 2486 2487 2492 2497 2535 2540 2541 2542 2543 2544 2566 2570 2582 2586 2587 2588
 2597 2610 2642 2678 2706 2709 2733 2742 2746 2750 2751 2760 2765 2785 2798 2812 2816 2849 2864 2869
 2870 2873 2903 2905 2906 2958 2962 2966 2970 2976 2997 3005 3016 3033 3034 3068 3075 3110
-3127 564 2699 440 729 731 432 2458 2762 2872 2940 3203 689 1639
+3127 564 2699 440 729 731 432 2458 2762 2872 2940 3203 689 1639 1368 407
 </details>
