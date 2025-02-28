@@ -1,12 +1,11 @@
 struct Solution {
-    inline int maxAbsoluteSum(vector<int>& nums) {
-        int p = 0, n = 0, cp = 0, cn = 0;
+    int maxAbsoluteSum(vector<int>& nums) {
+        int total = 0, maxi = 0, mini = 0;
         for (int x : nums){
-            cp = max(0, cp + x);
-            cn = max(0, cn - x);
-            p = max(p, cp);
-            n = max(n, cn);
+            total += x;
+            maxi = max(maxi, total);
+            mini = min(mini, total);
         }
-        return max(p, n);
+        return maxi - mini;
     }
 };

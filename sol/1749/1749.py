@@ -1,12 +1,10 @@
 class Solution:
     def maxAbsoluteSum(self, nums: List[int]) -> int:
-        pos = 0
-        neg = 0
-        currPos = 0
-        currNeg = 0
+        total = 0
+        maxi = 0
+        mini = 0
         for x in nums:
-            currPos = max(0, currPos + x)
-            currNeg = max(0, currNeg - x)
-            pos = max(pos, currPos)
-            neg = max(neg, currNeg)
-        return max(pos, neg)
+            total += x
+            maxi = max(maxi, total)
+            mini = min(mini, total)
+        return maxi - mini
