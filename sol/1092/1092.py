@@ -7,31 +7,30 @@ class Solution:
             memo[i][0] = i
         for j in range(n2 + 1):
             memo[0][j] = j
-        for k in range(1, n1 + n2 + 1):
-            for i in range(max(1, k - n2), min(n1 + 1, k)):
-                j = k - i
-                if str1[i - 1] == str2[j - 1]:
-                    memo[i][j] = memo[i - 1][j - 1] + 1
+        for i in range(n1):
+            for j in range(n2):
+                if str1[i] == str2[j]:
+                    memo[i + 1][j + 1] = memo[i][j] + 1
                 else:
-                    memo[i][j] = min(memo[i - 1][j], memo[i][j - 1]) + 1
+                    memo[i + 1][j + 1] = min(memo[i][j + 1], memo[i + 1][j]) + 1
         l = memo[n1][n2]
         res = []
-        i, j = n1, n2
-        while i > 0 and j > 0:
-            if str1[i - 1] == str2[j - 1]:
-                res.append(str1[i - 1])
+        i, j = n1 - 1, n2 - 1
+        while i >= 0 and j >= 0:
+            if str1[i] == str2[j]:
+                res.append(str1[i])
                 i -= 1
                 j -= 1
-            elif memo[i][j] == memo[i - 1][j] + 1:
-                res.append(str1[i - 1])
+            elif memo[i + 1][j + 1] == memo[i][j + 1] + 1:
+                res.append(str1[i])
                 i -= 1
             else:
-                res.append(str2[j - 1])
+                res.append(str2[j])
                 j -= 1
         resStr = ''.join(res[::-1])
-        if i != 0:
-            resStr = str1[:i] + resStr
-        if j != 0:
-            resStr = str2[:j] + resStr
+        if i >= 0:
+            resStr = str1[:i + 1] + resStr
+        if j >= 0:
+            resStr = str2[:j + 1] + resStr
         return resStr
-
+        
