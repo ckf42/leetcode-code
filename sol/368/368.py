@@ -1,23 +1,23 @@
 class Solution:
     def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
-        nums.sort()
         n = len(nums)
-        edges = [[] for _ in range(n)]
-        for j in range(1, n):
-            for i in range(j):
-                if nums[j] % nums[i] == 0:
-                    edges[j].append(i)
-        optimalNext = [-1] * n
-        optimalLen = [1] * n
+        nums.sort()
+        chainLen = [1] * n
+        prevIdx = [-1] * n
+        maxLen = 0
+        maxIdx = 0
         for i in range(n):
-            selection = max(edges[i], key=lambda idx: optimalLen[idx], default=-1)
-            if selection != -1:
-                optimalNext[i] = selection
-                optimalLen[i] = optimalLen[selection] + 1
+            for j in range(i + 1, n):
+                if nums[j] % nums[i] != 0:
+                    continue
+                if chainLen[j] < chainLen[i] + 1:
+                    chainLen[j] = chainLen[i] + 1
+                    prevIdx[j] = i
+                    if chainLen[j] > maxLen:
+                        maxLen = chainLen[j]
+                        maxIdx = j
         res = []
-        ptr = max(range(n), key=lambda idx: optimalLen[idx])
-        while ptr != -1:
-            res.append(nums[ptr])
-            ptr = optimalNext[ptr]
+        while maxIdx != -1:
+            res.append(nums[maxIdx])
+            maxIdx = prevIdx[maxIdx]
         return res
-
