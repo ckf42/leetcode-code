@@ -1,32 +1,33 @@
 struct Solution {
-    static vector<string> res;
+    static array<string, 31> res;
 
     Solution() {
-        res[1] = "1";
+        res[1] = "1";  // idempotent
     }
 
     void compute(int n){
-        if (Solution::res[n].size() != 0){
+        string &res = Solution::res[n];
+        const string &s = Solution::res[n - 1];
+        if (res.size() != 0){
             return;
         }
-        if (Solution::res[n - 1].size() == 0){
+        if (s.size() == 0){
             this->compute(n - 1);
         }
-        string &s = Solution::res[n - 1];
         char c = s[0];
         int count = 1;
         for (int i = 1; i < s.size(); ++i){
             if (s[i] == c){
                 ++count;
             } else {
-                Solution::res[n] += to_string(count);
-                Solution::res[n] += c;
+                res += to_string(count);
+                res += c;
                 c = s[i];
                 count = 1;
             }
         }
-        Solution::res[n] += to_string(count);
-        Solution::res[n] += c;
+        res += to_string(count);
+        res += c;
     }
 
     inline string countAndSay(int n) {
@@ -37,4 +38,4 @@ struct Solution {
     }
 };
 
-vector<string> Solution::res(31);
+array<string, 31> Solution::res;

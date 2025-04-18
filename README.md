@@ -2,6 +2,8 @@
 
 This repo contains solutions to some leetcode problems, for the purpose of recording which questions I have solved.
 
+Not sure if you would care, but [this is my leetcode profile](https://leetcode.com/u/ckf42/).
+
 ## Problems without explanations
 
 Here is a list of problems that
