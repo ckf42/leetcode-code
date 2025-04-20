@@ -3,16 +3,20 @@ struct Solution {
     long long countFairPairs(vector<int>& nums, int lower, int upper) {
         ranges::sort(nums);
         int n = nums.size();
-        int s = n, e = n;
         ll res = 0;
-        const auto b = nums.begin();
+        int l = n, r = n - 1;
         for (int i = 0; i < n; ++i){
-            s = lower_bound(b + i + 1, b + s, lower - nums[i]) - b;
-            e = upper_bound(b + i, b + e, upper - nums[i]) - b;
-            if (e <= i){
+            l = max(l, i + 1);
+            while (l > i + 1 && nums[i] + nums[l - 1] >= lower){
+                --l;
+            }
+            while (r >= l && nums[i] + nums[r] > upper){
+                --r;
+            }
+            if (r <= i){
                 break;
             }
-            res += e - s;
+            res += r - l + 1;
         }
         return res;
     }
