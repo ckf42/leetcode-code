@@ -4,13 +4,13 @@ class Solution:
         lastMinKIdx = -1
         lastMaxKIdx = -1
         lastObIdx = -1
-        for e in range(len(nums)):
-            if not (minK <= nums[e] <= maxK):
-                lastObIdx = e
+        for i, x in enumerate(nums):
+            if not (minK <= x <= maxK):
+                lastObIdx = i
             else:
-                if nums[e] == minK:
-                    lastMinKIdx = e
-                if nums[e] == maxK:
-                    lastMaxKIdx = e
+                if x == minK:
+                    lastMinKIdx = i
+                if x == maxK:
+                    lastMaxKIdx = i
                 res += max(0, min(lastMinKIdx, lastMaxKIdx) - lastObIdx)
         return res
