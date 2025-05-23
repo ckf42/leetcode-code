@@ -1,57 +1,49 @@
 struct Solution {
     void setZeroes(vector<vector<int>>& matrix) {
-        short m = matrix.size(), n = matrix.front().size();
-        short markerRow = -1, markerCol = -1, i, j;
-        for (i = 0; i < m; ++i){
-            for (j = 0; j < n; ++j){
-                if (matrix[i][j] == 0){
-                    markerRow = i;
-                    markerCol = j;
-                    break;
-                }
-            }
-            if (markerRow != -1){
+        int m = matrix.size(), n = matrix[0].size();
+        bool clearFirstRow = false, clearFirstCol = false;
+        for (int j = 0; j < n; ++j){
+            if (matrix[0][j] == 0){
+                clearFirstRow = true;
                 break;
             }
         }
-        if (markerRow == -1){
-            return;
-        }
-        for (i = 0; i < m; ++i){
-            if (i == markerRow){
-                continue;
+        for (int i = 0; i < m; ++i){
+            if (matrix[i][0] == 0){
+                clearFirstCol = true;
+                break;
             }
-            matrix[i][markerCol] = (matrix[i][markerCol] != 0 ? 0 : 1);
         }
-        for (j = 0; j < n; ++j){
-            if (j == markerCol){
-                continue;
-            }
-            matrix[markerRow][j] = (matrix[markerRow][j] != 0 ? 0 : 1);
-        }
-        for (i = markerRow + 1; i < m; ++i){
-            for (j = 0; j < n; ++j){
-                if (j == markerCol){
-                    continue;
-                }
+        for (int i = 1; i < m; ++i){
+            for (int j = 1; j < n; ++j){
                 if (matrix[i][j] == 0){
-                    matrix[markerRow][j] = 1;
-                    matrix[i][markerCol] = 1;
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
                 }
             }
         }
-        for (i = 0; i < m; ++i){
-            if (matrix[i][markerCol] == 1){
-                for (j = 0; j < n; ++j){
+        for (int i = 1; i < m; ++i){
+            if (matrix[i][0] == 0){
+                for (int j = 1; j < n; ++j){
                     matrix[i][j] = 0;
                 }
             }
         }
-        for (j = 0; j < n; ++j){
-            if (matrix[markerRow][j] == 1){
-                for (i = 0; i < m; ++i){
+        for (int j = 1; j < n; ++j){
+            if (matrix[0][j] == 0){
+                for (int i = 1; i < m; ++i){
                     matrix[i][j] = 0;
                 }
+            }
+        }
+        if (clearFirstRow){
+            for (int j = 0; j < n; ++j){
+                matrix[0][j] = 0;
+            }
+        }
+        if (clearFirstCol){
+            for (int i = 0; i < m; ++i){
+                matrix[i][0] = 0;
             }
         }
     }
