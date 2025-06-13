@@ -1,15 +1,13 @@
 # leetcode-code
 
-This repo contains solutions to some leetcode problems, for the purpose of recording which questions I have solved.
-
-Not sure if you would care, but [this is my leetcode profile](https://leetcode.com/u/ckf42/).
+This repo contains solutions to some questions on leetcode, to record which questions I have solved.
 
 ## Problems without explanations
 
-Here is a list of problems that
-* (a) are not really done yet;
+Here is a list of questions that
+* (a) I have not really finished;
 * (b) require further work on the solution; or
-* (c) do not have an explanation on the algorithm (usually because I haven't checked):
+* (c) do not have an explanation on the algorithm (usually because I have not checked if they need one):
 
 <details>
 1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 22 23
