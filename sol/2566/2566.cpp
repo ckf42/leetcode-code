@@ -1,21 +1,25 @@
-#include <algorithm>
-
 struct Solution {
     int minMaxDifference(int num) const {
-        string s = to_string(num);
-        char target = 0;
-        for (char c : s){
-            if (c != '9'){
-                target = c;
-                break;
+        int minNum = num, target = 0, d;
+        while (minNum != 0){
+            d = minNum % 10;
+            if (d != 9){
+                target = d;
             }
+            minNum /= 10;
         }
-        if (target == 0){
-            return num;
+        minNum = num;
+        int topDigit = d, mask = 1;
+        while (mask <= num){
+            d = (num / mask) % 10;
+            if (d == topDigit){
+                minNum -= topDigit * mask;
+            }
+            if (d == target){
+                num += (9 - target) * mask;
+            }
+            mask *= 10;
         }
-        string ss = s;
-        replace(ss.begin(), ss.end(), s[0], '0');
-        replace(s.begin(), s.end(), target, '9');
-        return stoi(s) - stoi(ss);
+        return num - minNum;
     }
 };
