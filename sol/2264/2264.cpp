@@ -1,22 +1,23 @@
 struct Solution {
-    string largestGoodInteger(const string &num) {
-        string res = "";
-        int combo = 0;
-        char lastDigit = '0' - 1;
+    string largestGoodInteger(string_view num) {
+        char prev = 0, maxChar = 0;
+        int count = 0;
         for (char c : num){
-            if (c == lastDigit){
-                combo += 1;
-            } else {
-                combo = 1;
-                lastDigit = c;
-            }
-            if (combo == 3){
-                if (res == "" || lastDigit > res[0]){
-                    res = string(3, lastDigit);
+            if (c != prev){
+                if (count >= 3){
+                    maxChar = max(maxChar, prev);
                 }
-                combo = 0;
+                prev = c;
+                count = 0;
             }
+            ++count;
         }
-        return res;
+        if (count >= 3){
+            maxChar = max(maxChar, prev);
+        }
+        if (maxChar != 0){
+            return string(3, maxChar);
+        }
+        return string();
     }
 };
