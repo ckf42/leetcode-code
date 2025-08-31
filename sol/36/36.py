@@ -3,15 +3,18 @@ class Solution:
         r = [0] * 9
         c = [0] * 9
         b = [0] * 9
+        md = {str(i): 1 << i for i in range(10)}
+        q = tuple(i // 3 for i in range(9))
         for i in range(9):
             for j in range(9):
                 x = board[i][j]
                 if x == '.':
                     continue
-                m = 1 << (ord(x) - ord('0'))
-                if ((r[i] | c[j] | b[(i // 3) * 3 + j // 3]) & m) != 0:
+                m = md[x]
+                d = q[i] * 3 + q[j]
+                if ((r[i] | c[j] | b[d]) & m) != 0:
                     return False
                 r[i] |= m
                 c[j] |= m
-                b[(i // 3) * 3 + j // 3] |= m
+                b[d] |= m
         return True
