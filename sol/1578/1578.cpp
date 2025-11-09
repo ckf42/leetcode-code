@@ -1,19 +1,20 @@
+#include <ranges>
+
 struct Solution {
-    int minCost(const string &colors, const vector<int>& neededTime) {
-        int totalTime = 0;
-        int s = 0, e, maxVal;
-        while (s < colors.size()){
-            e = s + 1;
-            maxVal = neededTime[s];
-            totalTime += maxVal;
-            while (e < colors.size() && colors[s] == colors[e]){
-                maxVal = max(maxVal, neededTime[e]);
-                totalTime += neededTime[e];
-                ++e;
+    int minCost(string colors, vector<int>& neededTime) {
+        int res = 0, maxt = 0;
+        char prev = '\0';
+        for (auto [c, t] : ranges::zip_view(colors, neededTime)){
+            if (c == prev){
+                if (t > maxt){
+                    swap(t, maxt);
+                }
+                res += t;
+            } else {
+                prev = c;
+                maxt = t;
             }
-            totalTime -= maxVal;
-            s = e;
         }
-        return totalTime;
+        return res;
     }
 };

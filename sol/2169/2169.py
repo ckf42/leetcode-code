@@ -4,7 +4,7 @@ class Solution:
         if num1 < num2:
             num1, num2 = num2, num1
         while num2 != 0:
-            count += num1 // num2
-            num1 %= num2
+            q, num1 = divmod(num1, num2)
+            count += q
             num1, num2 = num2, num1
         return count
